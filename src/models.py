@@ -23,25 +23,54 @@ class Planets(db.Model):
 
     id = db.Column(Integer, primary_key=True)
     name = db.Column(String(250), nullable=False)
-    rotation_period = db.Column(Integer, nullable=True)
-    orbital_period = db.Column(Integer, nullable=True)
-    diameter = db.Column(Integer, nullable=True)
+    rotation = db.Column(Integer, nullable=True)
     climate = db.Column(String(250), nullable=True)
     gravity = db.Column(String(250), nullable=True)
     terrain = db.Column(String(250), nullable=True)
-    surface_water = db.Column(Integer, nullable=True)
     population = db.Column(Integer, nullable=True)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "rotation": self.rotation,
+            "climate" : self.climate,
+            "gravity": self.gravity,
+            "terrain": self.terrain,
+            "population": self.population
+        }
+
+    def get_planets():
+        all_planets = Planets.query.all()
+        all_planets = list(map(lambda x: x.serialize(), all_planets))
+        return all_planets
 
 class Characters(db.Model):
     id = db.Column(Integer, primary_key=True)
     name = db.Column(String(250), nullable=False)
     height = db.Column(Integer, nullable=True)
-    mass = db.Column(Integer, nullable=True)
     hair_color = db.Column(String(250), nullable=True)
     skin_color = db.Column(String(250), nullable=True)
     eye_color = db.Column(String(250), nullable=True)
-    birth_year = db.Column(Integer, nullable=True)
+    birth_year = db.Column(String(250), nullable=True)
     gender = db.Column(String(250), nullable=True)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "height": self.height,
+            "hair_color": self.hair_color,
+            "skin_color": self.skin_color,
+            "eye_color": self.eye_color,
+            "birth_year": self.birth_year,
+            "genderr": self.gender
+        }
+
+    def get_characters():
+        all_characters = Characters.query.all()
+        all_characters = list(map(lambda x: x.serialize(), all_characters))
+        return all_characters
 
 class Favorites(db.Model):
     id = db.Column(Integer, primary_key=True)
