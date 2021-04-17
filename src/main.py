@@ -54,6 +54,19 @@ def get_characters():
     data = jsonify(Characters.get_characters())
     return data
 
+
+@app.route("/register", methods=["POST"])
+def register():
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
+
+    user1 = User(email=email, password=password, is_active=True)
+    db.session.add(user1)
+    db.session.commit()
+
+    return jsonify({"msg":"User added"})
+
+
 @app.route("/login", methods=["POST"])
 def login():
     email = request.json.get("email", None)
