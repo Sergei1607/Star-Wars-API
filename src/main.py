@@ -103,6 +103,38 @@ def addfavoritecharacter():
 
     return jsonify({"msg" : "Favorite character added"})
 
+@app.route("/getfavorites", methods=["GET"])
+@jwt_required()
+def getfavorites():
+    current_user_id = get_jwt_identity()
+
+    all_favorites = Favorites.query.filter_by(user_id=current_user_id)
+
+    all_favorites = list(map(lambda x: x.serialize(), all_characters))
+           
+    return jsonify(all_characters)
+
+@app.route("/deletefavoriteplanet", methods=["DELETE"])
+@jwt_required()
+def deletefavoriteplanet():
+    current_user_id = get_jwt_identity()
+    planet = request.json.get("planetid", None)
+    planet1 = Favorites.query.filter_by(user_id=current_user_id, planet_id=planet).delete()
+    db.session.commit()
+           
+    return jsonify({"msg" : "Favorite planet deleted"})
+
+@app.route("/deletefavoritecharacter", methods=["DELETE"])
+@jwt_required()
+def deletefavoritecharacter():
+    current_user_id = get_jwt_identity()
+    character = request.json.get("characterid", None)
+    character = Favorites.query.filter_by(user_id=current_user_id, character_id=character).delete()
+    db.session.commit()
+           
+    return jsonify({"msg" : "Favorite character deleted"})
+
+
 # this only runs if `$ python src/main.py` is executed
 if __name__ =='__main__':
     PORT = int(os.environ.get('PORT', 3000))
