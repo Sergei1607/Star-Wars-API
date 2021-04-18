@@ -10,7 +10,7 @@ class User(db.Model):
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<User %r>' % self.id
 
     def serialize(self):
         return {
@@ -74,6 +74,9 @@ class Characters(db.Model):
 
 class Favorites(db.Model):
     id = db.Column(Integer, primary_key=True)
-    usuario_id = db.Column(Integer, ForeignKey(User.id))
-    planeta_id = db.Column(Integer, ForeignKey(Planets.id))
-    personaje_id = db.Column(Integer, ForeignKey(Characters.id))
+    user_id = db.Column(Integer, ForeignKey(User.id))
+    planet_id = db.Column(Integer, ForeignKey(Planets.id))
+    character_id = db.Column(Integer, ForeignKey(Characters.id))
+    planets = db.relationship("Planets")
+    user = db.relationship("User")
+    characters = db.relationship("Characters")

@@ -76,15 +76,32 @@ def login():
     if user is None:
         return jsonify({"msg":"Bad Username or Password"}), 401
 
-    access_token = create_access_token(identity = user.email)
+    access_token = create_access_token(identity = user.id)
     return jsonify({"token" : access_token})
 
-@app.route("/protected", methods=["GET"])
+@app.route("/addfavoriteplanet", methods=["POST"])
 @jwt_required()
-def protected():
-    current_user_email = get_jwt_identity()
-    user = User.query.filter_by(email = current_user_email).first()
-    return jsonify({"email": user.email})
+def addfavoriteplanet():
+    current_user_id = get_jwt_identity()
+    planet = request.json.get("planetid", None)
+
+    favorite = Favorites(user_id=current_user_id, planet_id=planet)
+    db.session.add(favorite)
+    db.session.commit()
+
+    return jsonify({"msg" : "Favorite planet added"})
+
+@app.route("/addfavoritecharacter", methods=["POST"])
+@jwt_required()
+def addfavoritecharacter():
+    current_user_id = get_jwt_identity()
+    character = request.json.get("characterid", None)
+
+    favorite = Favorites(user_id=current_user_id, character_id=character)
+    db.session.add(favorite)
+    db.session.commit()
+
+    return jsonify({"msg" : "Favorite character added"})
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ =='__main__':

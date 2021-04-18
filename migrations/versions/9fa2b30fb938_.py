@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 90231305f659
+Revision ID: 9fa2b30fb938
 Revises: 
-Create Date: 2021-04-11 02:37:14.850887
+Create Date: 2021-04-18 01:56:32.660239
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '90231305f659'
+revision = '9fa2b30fb938'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,24 +22,20 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=250), nullable=False),
     sa.Column('height', sa.Integer(), nullable=True),
-    sa.Column('mass', sa.Integer(), nullable=True),
     sa.Column('hair_color', sa.String(length=250), nullable=True),
     sa.Column('skin_color', sa.String(length=250), nullable=True),
     sa.Column('eye_color', sa.String(length=250), nullable=True),
-    sa.Column('birth_year', sa.Integer(), nullable=True),
+    sa.Column('birth_year', sa.String(length=250), nullable=True),
     sa.Column('gender', sa.String(length=250), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('planets',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=250), nullable=False),
-    sa.Column('rotation_period', sa.Integer(), nullable=True),
-    sa.Column('orbital_period', sa.Integer(), nullable=True),
-    sa.Column('diameter', sa.Integer(), nullable=True),
+    sa.Column('rotation', sa.Integer(), nullable=True),
     sa.Column('climate', sa.String(length=250), nullable=True),
     sa.Column('gravity', sa.String(length=250), nullable=True),
     sa.Column('terrain', sa.String(length=250), nullable=True),
-    sa.Column('surface_water', sa.Integer(), nullable=True),
     sa.Column('population', sa.Integer(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
@@ -53,12 +49,12 @@ def upgrade():
     )
     op.create_table('favorites',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('usuario_id', sa.Integer(), nullable=True),
-    sa.Column('planeta_id', sa.Integer(), nullable=True),
-    sa.Column('personaje_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['personaje_id'], ['characters.id'], ),
-    sa.ForeignKeyConstraint(['planeta_id'], ['planets.id'], ),
-    sa.ForeignKeyConstraint(['usuario_id'], ['user.id'], ),
+    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('planet_id', sa.Integer(), nullable=True),
+    sa.Column('character_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['character_id'], ['characters.id'], ),
+    sa.ForeignKeyConstraint(['planet_id'], ['planets.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
