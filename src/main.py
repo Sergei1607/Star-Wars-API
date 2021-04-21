@@ -110,9 +110,9 @@ def getfavorites():
 
     all_favorites = Favorites.query.filter_by(user_id=current_user_id)
 
-    all_favorites = list(map(lambda x: x.serialize(), all_characters))
+    all_favorites = list(map(lambda x: x.serialize(), all_favorites))
            
-    return jsonify(all_characters)
+    return jsonify(all_favorites)
 
 @app.route("/deletefavoriteplanet", methods=["DELETE"])
 @jwt_required()
