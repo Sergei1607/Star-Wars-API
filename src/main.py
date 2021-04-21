@@ -64,7 +64,7 @@ def register():
     db.session.add(user1)
     db.session.commit()
 
-    return jsonify({"msg":"User added"})
+    return jsonify({"msg":"User added"}), 200
 
 
 @app.route("/login", methods=["POST"])
@@ -77,7 +77,7 @@ def login():
         return jsonify({"msg":"Bad Username or Password"}), 401
 
     access_token = create_access_token(identity = user.id)
-    return jsonify({"token" : access_token})
+    return jsonify({"token" : access_token}), 200
 
 @app.route("/addfavoriteplanet", methods=["POST"])
 @jwt_required()
